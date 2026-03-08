@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine? 💖</title>
+
+<style>
+:root {
+  --bg-light: #b11226;
+  --bg-dark: #0b1c2d;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: "Times New Roman", serif;
+  background: var(--bg-light);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.5s;
+}
+
+body.dark {
+  background: var(--bg-dark);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 12px;
+  font-size: 16px;
+  background: rgba(255,255,255,0.25);
+}
+
+.music { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+.toggle { position: fixed; top: 15px; right: 15px; z-index: 9999; }
+
+#mainScreen {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.code-box {
+  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  min-height: 130px;
+  white-space: pre-line;
+  text-align: left;
+}
+
+.yes {
+  background: #00ff9c;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.no {
+  background: #ff4b5c;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-size: 16px;
+}
+
+/* COVER OVERLAY */
+#coverOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.coverCard {
+  background: rgba(255,255,255,0.2);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.coverCard button {
+  margin-top: 15px;
+  padding: 12px 26px;
+  border-radius: 25px;
+  background: #00ff9c;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* YES SCREEN */
+#yesOverlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 5;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  font-size: 20px;
+  animation: floatUp 5s linear;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity: 0; }
+  to { transform: translateY(-10vh); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- COVER PAGE -->
+<div id="coverOverlay">
+  <div class="coverCard">
+    <h1>💖 Haiiii Babyyyyyy 💖</h1>
+    <p>Press OKAY to begin something special, hehehe. MWAHH. ✨</p>
+    <button onclick="startExperience()">OK 💘</button>
+  </div>
+</div>
+
+<!-- TOGGLES -->
+<button class="music" onclick="toggleMusic()">🎵</button>
+<button class="toggle" onclick="toggleMode()">🌙</button>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="iwannabeyours.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MAIN SCREEN -->
+<div id="mainScreen">
+  <h1>💖 Haiiii, My Cutie Babyyyyy 💖</h1>
+  <div class="code-box" id="codeBox"></div>
+  <p>Will the love of my life please be my Valentine? 💕</p>
+  <button class="yes" onclick="yesClicked()">Yes 💘</button>
+  <button class="no" onclick="alert('Excuse YOU, fuckwad. Be a good girl and press yes. Mwahhh')">No 😢</button>
+</div>
+
+<!-- YES SCREEN -->
+<div id="yesOverlay">
+  <div>
+    <h1>💖 YAYYYYYY MY NEHA KHAN SAID YESSSS 💖</h1>
+    <h2>SHE'S MINEEEEE HEHEHEHE <br>
+    F you, Iniyaa, Rithika and sathbitch, She's minneeeeeeee</h2>
+    <p>
+      I'll always be your good boy, Mommy.<br>
+      Mwah, I LOVE YOU SOOO MUCHHH.<br>
+      Always stay mine, my wife. <br>
+      MMWAHHHHHHH.
+    </p>
+  </div>
+</div>
+
+<script>
+// Typing animation (DELAYED)
+const codeText = [
+  "Initializing love.exe...",
+  "Loading horniness...",
+  "Importing memories...",
+  "",
+  "def love(you, me):",
+  "    while True:",
+  "        flirting = YES, ALWAYS, ALL THE TIME, INFINITYYYY",
+  "        being downbad = ABSOLOUTELY",
+  "        being Neha Khan's good boy = MOST DEFINITELY",
+  "",
+  "print('You are my everything, my cutie baby ❤️')",
+  "",
+  "System Output:",
+  "Will you be my Valentine, my love? 💕"
+];
+
+let i = 0, j = 0;
+const box = document.getElementById("codeBox");
+
+function typeEffect() {
+  if (i < codeText.length) {
+    if (j < codeText[i].length) {
+      box.innerHTML += codeText[i][j++];
+      setTimeout(typeEffect, 35);
+    } else {
+      box.innerHTML += "\n";
+      i++; j = 0;
+      setTimeout(typeEffect, 250);
+    }
+  }
+}
+
+// MUSIC
+const music = document.getElementById("bgMusic");
+let started = false;
+
+function startExperience() {
+  music.volume = 0.7;
+  music.play();
+  started = true;
+
+  box.innerHTML = "";
+  i = 0;
+  j = 0;
+  typeEffect();
+
+  document.getElementById("coverOverlay").style.display = "none";
+}
+
+function toggleMusic() {
+  if (!started) return;
+  if (music.paused) music.play();
+  else music.pause();
+}
+
+// DARK MODE
+function toggleMode() {
+  document.body.classList.toggle("dark");
+}
+
+// YES CLICK
+function yesClicked() {
+  launchConfetti();
+  setTimeout(() => {
+    document.getElementById("mainScreen").style.display = "none";
+    document.getElementById("yesOverlay").style.display = "flex";
+  }, 1500);
+}
+
+// FLOATING HEARTS
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 5000);
+}, 350);
+
+// CONFETTI (TOP + SIDES)
+function launchConfetti() {
+
+  function spawnHeart(x, y, vx, vy) {
+    const h = document.createElement("div");
+    h.innerHTML = "❤️";
+    h.style.position = "fixed";
+    h.style.left = x + "px";
+    h.style.top = y + "px";
+    h.style.fontSize = Math.random() * 18 + 14 + "px";
+    h.style.pointerEvents = "none";
+    h.style.zIndex = 9999;
+    document.body.appendChild(h);
+
+    let life = 0;
+    const interval = setInterval(() => {
+      x += vx;
+      y += vy;
+      vy += 0.4;
+      h.style.left = x + "px";
+      h.style.top = y + "px";
+      life++;
+      if (life > 80) {
+        clearInterval(interval);
+        h.remove();
+      }
+    }, 20);
+  }
+
+  // TOP
+  for (let k = 0; k < 80; k++) {
+    spawnHeart(Math.random() * window.innerWidth, -20, Math.random() * 2 - 1, Math.random() * 3 + 2);
+  }
+
+  // LEFT
+  for (let k = 0; k < 60; k++) {
+    spawnHeart(-20, Math.random() * window.innerHeight, Math.random() * 6 + 4, Math.random() * -4);
+  }
+
+  // RIGHT
+  for (let k = 0; k < 60; k++) {
+    spawnHeart(window.innerWidth + 20, Math.random() * window.innerHeight, -(Math.random() * 6 + 4), Math.random() * -4);
+  }
+}
+</script>
+
+</body>
+</html>
